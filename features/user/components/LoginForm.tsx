@@ -12,7 +12,6 @@ import { toast } from "sonner";
 export function LoginForm() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const router = useRouter();
   const { login } = useAuth();
 
@@ -74,10 +73,6 @@ export function LoginForm() {
       >
         {loading ? "Đang đăng nhập..." : "Đăng nhập"}
       </Button>
-
-      {message && (
-        <p className="text-sm text-center text-red-500 mt-2">{message}</p>
-      )}
 
 <div className="text-center text-gray-400 text-sm mt-4 relative">
         <span className="bg-white px-2 relative z-10">HOẶC TIẾP TỤC VỚI</span>

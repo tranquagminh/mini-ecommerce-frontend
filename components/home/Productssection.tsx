@@ -1,56 +1,8 @@
+"use client"
 import { ArrowRight, Heart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-const products = [
-  {
-    id: 1,
-    name: "Tai nghé Sony WH-1000XM5",
-    category: "Tai nghé & Audio",
-    price: 7990000,
-    originalPrice: 9990000,
-    rating: 4.8,
-    reviews: 1234,
-    image: "/products/headphone.jpg",
-    badge: "BÁN CHẠY",
-    badgeColor: "bg-red-500",
-  },
-  {
-    id: 2,
-    name: "Laptop Dell XPS 13",
-    category: "Laptop & Máy tính",
-    price: 32990000,
-    originalPrice: 38990000,
-    rating: 4.9,
-    reviews: 856,
-    image: "/products/laptop.jpg",
-    badge: "NEW",
-    badgeColor: "bg-green-500",
-  },
-  {
-    id: 3,
-    name: "Apple Watch Series 9",
-    category: "Smart Watch",
-    price: 10990000,
-    originalPrice: null,
-    rating: 4.7,
-    reviews: 2103,
-    image: "/products/watch.jpg",
-    badge: null,
-  },
-  {
-    id: 4,
-    name: "iPhone 15 Pro Max",
-    category: "Điện thoại",
-    price: 34990000,
-    originalPrice: 39990000,
-    rating: 4.9,
-    reviews: 3421,
-    image: "/products/iphone.jpg",
-    badge: "GIẢM GIÁ",
-    badgeColor: "bg-orange-500",
-  },
-];
+import { FEATURED_PRODUCTS } from "@/constants";
 
 export function ProductsSection() {
   return (
@@ -77,7 +29,7 @@ export function ProductsSection() {
 
         {/* Products grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {FEATURED_PRODUCTS.map((product) => (
             <Link
               key={product.id}
               href={`/products/${product.id}`}
@@ -98,7 +50,13 @@ export function ProductsSection() {
                 )}
 
                 {/* Wishlist button */}
-                <button className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // TODO: Add to wishlist
+                  }}
+                  className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition-colors"
+                >
                   <Heart className="h-4 w-4 text-gray-600" />
                 </button>
 

@@ -6,7 +6,7 @@ export function DealBanner() {
   return (
     <section className="py-8 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="relative rounded-2xl overflow-hidden bg-linear-to-br from-red-500 via-orange-500 to-red-600 p-8 md:p-12">
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-red-500 via-orange-500 to-red-600 p-8 md:p-12">
           {/* Background pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -42,16 +42,14 @@ export function DealBanner() {
             {/* Right image/illustration */}
             <div className="relative h-64 md:h-80">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-full h-full bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <div className="text-white/50 text-center">
+                <div className="relative w-full h-full bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden">
                   <Image
                     src="/sale-image.jpg"
                     alt="Sale"
                     fill
                     className="object-cover"
                     priority
-                />
-                  </div>
+                  />
                 </div>
               </div>
             </div>

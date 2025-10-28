@@ -8,10 +8,11 @@ import { Sidebar } from "./components/Sidebar";
 import { ProfileForm } from "./components/ProfileForm";
 import { FavoritesTab } from "./components/FavoritesTab";
 import { ChangePasswordForm } from "./components/ChangePasswordForm";
+import { AccountTabType } from "@/constants";
 
 export default function AccountPage() {
   const { user, logout } = useAuth();
-  const [tab, setTab] = useState<string>("profile");
+  const [tab, setTab] = useState<AccountTabType>("profile");
 
   if (!user) {
     return (

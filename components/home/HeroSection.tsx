@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export function HeroSection() {
   return (
-    <section className="relative bg-linear-to-br from-purple-600 via-purple-500 to-pink-500 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left content */}
@@ -40,7 +40,7 @@ export function HeroSection() {
               <Button 
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-black hover:bg-white/10 font-semibold px-8 h-12"
+                className="border-2 border-white text-white bg-transparent hover:bg-white/10 font-semibold px-8 h-12"
               >
                 Tìm hiểu thêm
               </Button>
