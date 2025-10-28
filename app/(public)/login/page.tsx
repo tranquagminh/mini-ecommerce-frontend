@@ -16,15 +16,15 @@ export default function AuthPage() {
     if (token) {
       router.replace("/account");
     }
-  }, [token]);
+  }, [token,router]);
   
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-indigo-50 to-white">
+    <div className="min-h-screen flex bg-linear-to-br from-indigo-50 to-white">
       {/* Left content */}
       <div className="hidden lg:flex flex-col justify-center px-16 w-1/2">
       <div className="flex items-center gap-3">
         {/* Biểu tượng icon với gradient */}
-        <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-gradient-to-tr from-blue-500 to-purple-500 shadow-md">
+        <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-linear-to-tr from-blue-500 to-purple-500 shadow-md">
             <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
