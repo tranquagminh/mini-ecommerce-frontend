@@ -6,6 +6,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { loginSchema } from "@/features/user/validation";
+import { toast } from "sonner";
 
 export function LoginForm() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -19,12 +21,18 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    const result = loginSchema.safeParse(form);
+
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return;
+    }
     try {
       await login(form.email, form.password);
+      toast.success("Đăng nhập thành công 🎉");
       router.push("/account");
-    } catch {
-      setMessage("Email hoặc mật khẩu không chính xác ❌");
+    } catch { 
+      toast.error("Email hoặc mật khẩu không chính xác ❌");
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "@/store/authStore";
 import { getCurrentUser, loginUser, registerUser } from "@/features/user/api";
 
@@ -30,14 +30,14 @@ export function useAuth() {
   }
 
   // Lấy thông tin user từ /users/me
-  async function fetchUser() {
+  const fetchUser = useCallback(async () => {
     try {
       const data = await getCurrentUser();
       setUser(data);
     } catch {
       logout();
     }
-  }
+  }, [logout, setUser]);
 
   useEffect(() => {
     if (token && !user) {
@@ -47,7 +47,7 @@ export function useAuth() {
   
       return () => clearTimeout(timer);
     }
-  }, [token, user]);
+  }, [token, user, fetchUser]);
 
   return { user, loading, token, login, register, logout };
 }
