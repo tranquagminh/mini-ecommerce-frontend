@@ -29,50 +29,106 @@ export function ProfileForm({ user }: Props) {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Thông tin cá nhân</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label className="mb-2">Họ và tên</Label>
-            <Input name="username" value={form.username} onChange={handleChange} />
-          </div>
-          <div>
-            <Label className="mb-2">Số điện thoại</Label>
-            <Input name="phone" value={form.phone} onChange={handleChange} />
-          </div>
-          <div>
-            <Label className="mb-2">Email</Label>
-            <Input name="email" value={form.email} onChange={handleChange} disabled />
-          </div>
-          <div>
-            <Label className="mb-2">Ngày sinh</Label>
-            <Input type="date" name="birthday" value={form.birthday || ""} onChange={handleChange} />
-          </div>
-          <div>
-            <Label className="mb-2">Giới tính</Label>
-            <select
-              name="gender"
-              value={form.gender}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md p-2"
-            >
-              <option value="">Chọn</option>
-              <option value="male">Nam</option>
-              <option value="female">Nữ</option>
-              <option value="other">Khác</option>
-            </select>
-          </div>
-        </div>
+      {/* Tabs */}
+      <div className="flex items-center gap-6 border-b mb-6">
+        <button className="pb-3 px-1 border-b-2 border-blue-600 text-blue-600 font-medium text-sm">
+          Thông tin cá nhân
+        </button>
+        <button className="pb-3 px-1 text-gray-600 hover:text-gray-900 font-medium text-sm">
+          Đơn hàng
+        </button>
+        <button className="pb-3 px-1 text-gray-600 hover:text-gray-900 font-medium text-sm">
+          Yêu thích
+        </button>
+      </div>
 
-        <div className="flex gap-4 mt-4">
-          <Button type="submit" className="bg-indigo-600 text-white hover:bg-indigo-700">
-            Lưu thay đổi
-          </Button>
-          <Button type="button" variant="outline">
-            Hủy
-          </Button>
-        </div>
-      </form>
+      {/* Form content */}
+      <div className="max-w-2xl">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Thông tin cá nhân</h2>
+        
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-2 gap-5">
+            <div>
+              <Label className="mb-2 block text-sm font-medium text-gray-700">
+                Họ và tên
+              </Label>
+              <Input 
+                name="username" 
+                value={form.username} 
+                onChange={handleChange}
+                className="h-11"
+              />
+            </div>
+            <div>
+              <Label className="mb-2 block text-sm font-medium text-gray-700">
+                Số điện thoại
+              </Label>
+              <Input 
+                name="phone" 
+                value={form.phone} 
+                onChange={handleChange}
+                className="h-11"
+              />
+            </div>
+            <div>
+              <Label className="mb-2 block text-sm font-medium text-gray-700">
+                Email
+              </Label>
+              <Input 
+                name="email" 
+                value={form.email} 
+                onChange={handleChange} 
+                disabled
+                className="h-11 bg-gray-50"
+              />
+            </div>
+            <div>
+              <Label className="mb-2 block text-sm font-medium text-gray-700">
+                Ngày sinh
+              </Label>
+              <Input 
+                type="date" 
+                name="birthday" 
+                value={form.birthday || ""} 
+                onChange={handleChange}
+                className="h-11"
+              />
+            </div>
+            <div className="col-span-2">
+              <Label className="mb-2 block text-sm font-medium text-gray-700">
+                Giới tính
+              </Label>
+              <select
+                name="gender"
+                value={form.gender}
+                onChange={handleChange}
+                className="w-full h-11 border border-gray-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Chọn giới tính</option>
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+                <option value="other">Khác</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-2">
+            <Button 
+              type="submit" 
+              className="bg-black hover:bg-gray-800 text-white h-11 px-8"
+            >
+              Lưu thay đổi
+            </Button>
+            <Button 
+              type="button" 
+              variant="outline"
+              className="h-11 px-8"
+            >
+              Hủy
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

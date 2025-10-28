@@ -27,6 +27,7 @@ export function LoginForm() {
       toast.error(result.error.issues[0].message);
       return;
     }
+    setLoading(true);
     try {
       await login(form.email, form.password);
       toast.success("Đăng nhập thành công 🎉");

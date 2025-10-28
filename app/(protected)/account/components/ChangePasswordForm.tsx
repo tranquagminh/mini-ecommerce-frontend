@@ -29,18 +29,18 @@ export function ChangePasswordForm() {
       <h2 className="text-xl font-semibold text-gray-800 mb-4">Đổi mật khẩu</h2>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         <div>
-          <Label>Mật khẩu hiện tại</Label>
+          <Label className="mb-2">Mật khẩu hiện tại</Label>
           <Input name="currentPassword" type="password" onChange={handleChange} />
         </div>
         <div>
-          <Label>Mật khẩu mới</Label>
+          <Label className="mb-2">Mật khẩu mới</Label>
           <Input name="newPassword" type="password" onChange={handleChange} />
         </div>
         <div>
-          <Label>Xác nhận mật khẩu mới</Label>
+          <Label className="mb-2">Xác nhận mật khẩu mới</Label>
           <Input name="confirmPassword" type="password" onChange={handleChange} />
         </div>
-        <Button type="submit" className="bg-indigo-600 text-white hover:bg-indigo-700">
+        <Button type="submit" className="bg-black hover:bg-gray-800 text-white">
           Đổi mật khẩu
         </Button>
       </form>

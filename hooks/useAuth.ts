@@ -3,7 +3,7 @@ import { useAuthStore } from "@/store/authStore";
 import { getCurrentUser, loginUser, registerUser } from "@/features/user/api";
 
 export function useAuth() {
-  const { user, token, setUser, setToken, logout } = useAuthStore();
+  const { user, token, isHydrated, setUser, setToken, logout } = useAuthStore();
   const [loading, setLoading] = useState(false);
 
   // Đăng nhập
@@ -40,14 +40,10 @@ export function useAuth() {
   }, [logout, setUser]);
 
   useEffect(() => {
-    if (token && !user) {
-      const timer = setTimeout(() => {
+    if (isHydrated && token && !user) {
         fetchUser();
-      }, 150); 
-  
-      return () => clearTimeout(timer);
     }
-  }, [token, user, fetchUser]);
+  }, [isHydrated,token, user, fetchUser]);
 
   return { user, loading, token, login, register, logout };
 }
