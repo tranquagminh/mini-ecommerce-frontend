@@ -1,15 +1,16 @@
 import { User } from "@/features/user/types";
+import { AccountTabType } from "@/constants";
 import { cn } from "@/lib/utils";
 import { User as UserIcon, Package, Heart, MapPin, Bell, CreditCard, Settings, LogOut } from "lucide-react";
 
 interface SidebarProps {
-  active: string;
-  onChange: (tab: string) => void;
+  active: AccountTabType;
+  onChange: (tab: AccountTabType) => void;
   onLogout: () => void;
   user: User;   
 }
 
-const menu = [
+const menu: { key: AccountTabType; label: string; icon: typeof UserIcon }[] = [
   { key: "profile", label: "Thông tin cá nhân", icon: UserIcon },
   { key: "orders", label: "Đơn hàng của tôi", icon: Package },
   { key: "favorites", label: "Sản phẩm yêu thích", icon: Heart },
@@ -25,13 +26,13 @@ export function Sidebar({ active, onChange, onLogout, user }: SidebarProps) {
       {/* User info */}
       <div className="p-6 border-b">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-2xl font-semibold shadow-lg">
-            {user.username?.[0]?.toUpperCase() || 'N'}
-            {user.username?.split(' ').pop()?.[0]?.toUpperCase() || 'V'}
+          <div className="w-16 h-16 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-2xl font-semibold shadow-lg">
+            {user.Username?.[0]?.toUpperCase() || 'N'}
+            {user.Username?.split(' ').pop()?.[0]?.toUpperCase() || 'V'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-gray-900 truncate">{user.username}</p>
-            <p className="text-sm text-gray-500 truncate">{user.email}</p>
+            <p className="font-semibold text-gray-900 truncate">{user.Username}</p>
+            <p className="text-sm text-gray-500 truncate">{user.Email}</p>
           </div>
         </div>
       </div>

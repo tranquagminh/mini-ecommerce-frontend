@@ -5,28 +5,60 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { User } from "@/features/user/types";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 interface Props {
   user: User;
 }
 
+function formatDateForInput(isoString: string | undefined): string {
+    if (!isoString) return "";
+    try {
+      const date = new Date(isoString);
+      // Format to YYYY-MM-DD
+      return date.toISOString().split('T')[0];
+    } catch {
+      return "";
+    }
+  }
+
 export function ProfileForm({ user }: Props) {
   const [form, setForm] = useState({
-    username: user.username || "",
-    email: user.email || "",
-    phone: user.phone || "",
-    gender: user.gender || "",
-    birthday: user.birthday || "",
+    username: user.Username || "",
+    email: user.Email || "",
+    phone: user.Phone || "",
+    gender: user.Gender || "",
+    birthday: formatDateForInput(user.Birthday) || "",
   });
+  const [loading, setLoading] = useState(false);
+  const {updateProfileUser, fetchUser} = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form cập nhật: ", form);
+    setLoading(true)
+    try{
+        await updateProfileUser(
+            form.username,
+            form.email,
+            form.phone,
+            form.birthday,
+            form.gender);
+        await fetchUser();
+        toast.success("Cập nhật thông tin thành công!")
+    }
+    catch{
+        toast.error("Cập nhật thất bại!")
+    }
+    finally{
+        setLoading(false)
+    }
+    
   };
-
+  console.log(user)
   return (
     <div>
       {/* Tabs */}
@@ -92,6 +124,7 @@ export function ProfileForm({ user }: Props) {
                 value={form.birthday || ""} 
                 onChange={handleChange}
                 className="h-11"
+                max={new Date().toISOString().split('T')[0]}
               />
             </div>
             <div className="col-span-2">
@@ -115,14 +148,25 @@ export function ProfileForm({ user }: Props) {
           <div className="flex gap-3 pt-2">
             <Button 
               type="submit" 
+              onSubmit={handleSubmit}
+              disabled={loading}
               className="bg-black hover:bg-gray-800 text-white h-11 px-8"
             >
-              Lưu thay đổi
+              {loading ? "Đang lưu thay đổi..." : "Lưu thay đổi"}
             </Button>
             <Button 
               type="button" 
               variant="outline"
               className="h-11 px-8"
+              onClick={() => {
+                setForm({
+                    username: user.Username || "",
+                  email: user.Email || "",
+                  phone: user.Phone || "",
+                  gender: user.Gender || "",
+                  birthday: formatDateForInput(user.Birthday),
+                })
+              }}
             >
               Hủy
             </Button>

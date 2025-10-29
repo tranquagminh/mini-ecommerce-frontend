@@ -41,7 +41,7 @@ export default function AuthPage() {
         </div>
 
         {/* Text gradient */}
-        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent tracking-tight">
+        <h1 className="text-3xl font-extrabold bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent tracking-tight">
             ShopHub
         </h1>
         </div>

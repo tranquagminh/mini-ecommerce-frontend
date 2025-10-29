@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "@/store/authStore";
-import { getCurrentUser, loginUser, registerUser } from "@/features/user/api";
+import { getCurrentUser, loginUser, registerUser, updateProfile } from "@/features/user/api";
 
 export function useAuth() {
   const { user, token, isHydrated, setUser, setToken, logout } = useAuthStore();
@@ -29,6 +29,22 @@ export function useAuth() {
     }
   }
 
+  async function updateProfileUser(username:string, email:string, phone:string, birthday: string, gender: string) {
+    try{
+      await updateProfile({
+        username: username,
+        first_name: username,
+        last_name: username,
+        phone: phone,
+        gender: gender,
+        birthday: birthday // Format: YYYY-MM-DD
+      })
+    }
+    finally{
+      setLoading(false)
+    }
+  }
+
   // Lấy thông tin user từ /users/me
   const fetchUser = useCallback(async () => {
     try {
@@ -45,5 +61,5 @@ export function useAuth() {
     }
   }, [isHydrated,token, user, fetchUser]);
 
-  return { user, loading, token, login, register, logout };
+  return { user, loading, token, login, fetchUser, register, logout, updateProfileUser };
 }
