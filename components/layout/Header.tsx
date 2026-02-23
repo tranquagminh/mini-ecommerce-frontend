@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, Heart, ShoppingCart, User, LogOut } from "lucide-react";
+import { Search, Heart, User, LogOut, ShoppingCart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import { useWishlistStore } from "@/store/wishlistStore";
+import { CartDropdown } from "@/components/cart/CartDropdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +28,7 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const wishlistCount = useWishlistStore((state) => state.getItemCount());
 
   // Helper function to check if link is active
   const isActive = (href: string) => {
@@ -39,9 +42,6 @@ export function Header() {
     logout();
     router.push("/login");
   };
-
-  // TODO: Get cart count from store/API
-  const cartCount = 0;
 
   return (
     <header className="border-b bg-white sticky top-0 z-50">
@@ -79,21 +79,22 @@ export function Header() {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {/* Wishlist */}
-            <button className="hover:text-blue-600 transition-colors">
+            <Link
+              href="/account?tab=favorites"
+              className="hover:text-blue-600 transition-colors relative p-2"
+            >
               <Heart className="h-6 w-6" />
-            </button>
-
-            {/* Cart */}
-            <button className="hover:text-blue-600 transition-colors relative">
-              <ShoppingCart className="h-6 w-6" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  {cartCount}
+              {wishlistCount > 0 && (
+                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 font-medium">
+                  {wishlistCount > 99 ? "99+" : wishlistCount}
                 </span>
               )}
-            </button>
+            </Link>
+
+            {/* Cart */}
+            <CartDropdown />
 
             {/* User Menu */}
             {user ? (
@@ -137,8 +138,8 @@ export function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link 
-                href="/login" 
+              <Link
+                href="/login"
                 className="hover:text-blue-600 transition-colors"
               >
                 <User className="h-6 w-6" />
@@ -159,7 +160,7 @@ export function Header() {
               }
 
               const active = isActive(item.href);
-              
+
               return (
                 <li key={item.href}>
                   <Link

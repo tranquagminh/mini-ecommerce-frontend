@@ -5,8 +5,8 @@ export interface User {
     Phone?: string;
     Gender?: string;
     Birthday?: string;
-    First_name?: string;
-    Last_name?: string;
+    FirstName?: string;
+    LastName?: string;
     Last_login?: string;
     Created_at?: string;
   }

@@ -26,6 +26,8 @@ function formatDateForInput(isoString: string | undefined): string {
 export function ProfileForm({ user }: Props) {
   const [form, setForm] = useState({
     username: user.Username || "",
+    first_name: user.FirstName || "",
+    last_name: user.LastName || "",
     email: user.Email || "",
     phone: user.Phone || "",
     gender: user.Gender || "",
@@ -43,7 +45,8 @@ export function ProfileForm({ user }: Props) {
     try{
         await updateProfileUser(
             form.username,
-            form.email,
+            form.first_name,
+            form.last_name,
             form.phone,
             form.birthday,
             form.gender);
@@ -69,9 +72,6 @@ export function ProfileForm({ user }: Props) {
         <button className="pb-3 px-1 text-gray-600 hover:text-gray-900 font-medium text-sm">
           Đơn hàng
         </button>
-        <button className="pb-3 px-1 text-gray-600 hover:text-gray-900 font-medium text-sm">
-          Yêu thích
-        </button>
       </div>
 
       {/* Form content */}
@@ -82,11 +82,33 @@ export function ProfileForm({ user }: Props) {
           <div className="grid grid-cols-2 gap-5">
             <div>
               <Label className="mb-2 block text-sm font-medium text-gray-700">
-                Họ và tên
+                Tên đăng nhập
               </Label>
-              <Input 
-                name="username" 
-                value={form.username} 
+              <Input
+                name="username"
+                value={form.username}
+                onChange={handleChange}
+                className="h-11"
+              />
+            </div>
+            <div>
+              <Label className="mb-2 block text-sm font-medium text-gray-700">
+                Họ
+              </Label>
+              <Input
+                name="first_name"
+                value={form.first_name}
+                onChange={handleChange}
+                className="h-11"
+              />
+            </div>
+            <div>
+              <Label className="mb-2 block text-sm font-medium text-gray-700">
+                Tên
+              </Label>
+              <Input
+                name="last_name"
+                value={form.last_name}
                 onChange={handleChange}
                 className="h-11"
               />
@@ -160,7 +182,9 @@ export function ProfileForm({ user }: Props) {
               className="h-11 px-8"
               onClick={() => {
                 setForm({
-                    username: user.Username || "",
+                  username: user.Username || "",
+                  first_name: user.FirstName || "",
+                  last_name: user.LastName || "",
                   email: user.Email || "",
                   phone: user.Phone || "",
                   gender: user.Gender || "",

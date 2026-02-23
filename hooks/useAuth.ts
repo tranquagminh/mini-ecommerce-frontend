@@ -29,18 +29,17 @@ export function useAuth() {
     }
   }
 
-  async function updateProfileUser(username:string, email:string, phone:string, birthday: string, gender: string) {
-    try{
+  async function updateProfileUser(username: string, first_name: string, last_name: string, phone: string, birthday: string, gender: string) {
+    try {
       await updateProfile({
         username: username,
-        first_name: username,
-        last_name: username,
+        first_name: first_name,
+        last_name: last_name,
         phone: phone,
         gender: gender,
         birthday: birthday // Format: YYYY-MM-DD
       })
-    }
-    finally{
+    } finally {
       setLoading(false)
     }
   }

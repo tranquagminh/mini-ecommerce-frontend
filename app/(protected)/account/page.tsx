@@ -52,9 +52,6 @@ export default function AccountPage() {
                     <button className="pb-3 px-1 border-b-2 border-blue-600 text-blue-600 font-medium text-sm">
                       Đơn hàng
                     </button>
-                    <button className="pb-3 px-1 text-gray-600 hover:text-gray-900 font-medium text-sm">
-                      Yêu thích
-                    </button>
                   </div>
                   <p className="text-gray-500">Danh sách đơn hàng sẽ hiển thị ở đây 💳</p>
                 </div>
