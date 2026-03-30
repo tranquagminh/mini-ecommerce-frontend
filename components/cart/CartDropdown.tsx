@@ -8,11 +8,14 @@ import { useCartStore } from "@/store/cartStore";
 
 export function CartDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { items, getItemCount, getTotal, updateQuantity, removeFromCart } = useCartStore();
 
   const itemCount = getItemCount();
   const total = getTotal();
+
+  useEffect(() => setMounted(true), []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -41,7 +44,7 @@ export function CartDropdown() {
         className="hover:text-blue-600 transition-colors relative p-2"
       >
         <ShoppingCart className="h-6 w-6" />
-        {itemCount > 0 && (
+        {mounted && itemCount > 0 && (
           <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 font-medium">
             {itemCount > 99 ? "99+" : itemCount}
           </span>
@@ -74,13 +77,13 @@ export function CartDropdown() {
             ) : (
               <div className="divide-y divide-gray-100">
                 {items.map((item) => (
-                  <div key={item.product.ID} className="p-4 flex gap-3">
+                  <div key={item.product.id} className="p-4 flex gap-3">
                     {/* Product Image */}
                     <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                      {item.product.Images && item.product.Images.length > 0 ? (
+                      {item.product.images && item.product.images.length > 0 ? (
                         <img
-                          src={item.product.Images[0].URL}
-                          alt={item.product.Name}
+                          src={item.product.images[0].image_url}
+                          alt={item.product.name}
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -93,21 +96,21 @@ export function CartDropdown() {
                     {/* Product Info */}
                     <div className="flex-1 min-w-0">
                       <Link
-                        href={`/products/${item.product.ID}`}
+                        href={`/products/${item.product.id}`}
                         onClick={() => setIsOpen(false)}
                         className="text-sm font-medium text-gray-900 hover:text-blue-600 line-clamp-2"
                       >
-                        {item.product.Name}
+                        {item.product.name}
                       </Link>
                       <p className="text-sm text-red-600 font-semibold mt-1">
-                        {formatPrice(item.product.Price)}
+                        {formatPrice(item.product.price)}
                       </p>
 
                       {/* Quantity Controls */}
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-1">
                           <button
-                            onClick={() => updateQuantity(item.product.ID, item.quantity - 1)}
+                            onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                             className="w-6 h-6 rounded border border-gray-200 flex items-center justify-center hover:bg-gray-50"
                           >
                             <Minus className="h-3 w-3" />
@@ -116,15 +119,15 @@ export function CartDropdown() {
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => updateQuantity(item.product.ID, item.quantity + 1)}
-                            disabled={item.quantity >= item.product.StockQuantity}
+                            onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                            disabled={item.quantity >= item.product.stock_quantity}
                             className="w-6 h-6 rounded border border-gray-200 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50"
                           >
                             <Plus className="h-3 w-3" />
                           </button>
                         </div>
                         <button
-                          onClick={() => removeFromCart(item.product.ID)}
+                          onClick={() => removeFromCart(item.product.id)}
                           className="text-gray-400 hover:text-red-500"
                         >
                           <Trash2 className="h-4 w-4" />

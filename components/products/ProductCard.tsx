@@ -8,7 +8,7 @@ import { useWishlistStore } from "@/store/wishlistStore";
 import { toast } from "sonner";
 
 // Helper to get badge info from tags
-function getBadgeFromTags(tags: ApiProduct["Tags"]): {
+function getBadgeFromTags(tags: ApiProduct["tags"]): {
   badge: string | null;
   badgeColor: string;
 } {
@@ -23,8 +23,8 @@ function getBadgeFromTags(tags: ApiProduct["Tags"]): {
   };
 
   return {
-    badge: tag.Name,
-    badgeColor: colorMap[tag.Slug] || "bg-gray-500",
+    badge: tag.name,
+    badgeColor: colorMap[tag.slug] || "bg-gray-500",
   };
 }
 
@@ -34,12 +34,12 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
-  const { badge, badgeColor } = getBadgeFromTags(product.Tags);
-  const inStock = product.StockQuantity > 0;
+  const { badge, badgeColor } = getBadgeFromTags(product.tags);
+  const inStock = product.stock_quantity > 0;
 
   const { addToCart } = useCartStore();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore();
-  const isWishlisted = isInWishlist(product.ID);
+  const isWishlisted = isInWishlist(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -54,7 +54,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
     e.preventDefault();
     e.stopPropagation();
     if (isWishlisted) {
-      removeFromWishlist(product.ID);
+      removeFromWishlist(product.id);
       toast.success("Đã xóa khỏi yêu thích");
     } else {
       addToWishlist(product);
@@ -65,15 +65,15 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   if (viewMode === "list") {
     return (
       <Link
-        href={`/products/${product.ID}`}
+        href={`/products/${product.id}`}
         className="group flex gap-4 bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all p-4"
       >
         {/* Image container */}
         <div className="relative w-48 h-48 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-          {product.Images && product.Images.length > 0 ? (
+          {product.images && product.images.length > 0 ? (
             <img
-              src={product.Images[0].URL}
-              alt={product.Name}
+              src={product.images[0].image_url}
+              alt={product.name}
               className="w-full h-full object-cover"
             />
           ) : (
@@ -93,26 +93,26 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
         {/* Content */}
         <div className="flex flex-col flex-grow py-2">
-          <p className="text-xs text-gray-500 mb-1">{product.Category?.Name}</p>
+          <p className="text-xs text-gray-500 mb-1">{product.category?.name}</p>
           <h3 className="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors mb-2">
-            {product.Name}
+            {product.name}
           </h3>
 
           {/* Short description */}
-          {product.ShortDescription && (
+          {product.short_description && (
             <p className="text-sm text-gray-500 mb-3 line-clamp-2">
-              {product.ShortDescription}
+              {product.short_description}
             </p>
           )}
 
           {/* Price */}
           <div className="flex items-center gap-2 mt-auto">
             <span className="text-xl font-bold text-red-500">
-              {product.Price.toLocaleString()} đ
+              {product.price.toLocaleString()} đ
             </span>
-            {product.CompareAtPrice > 0 && product.CompareAtPrice !== product.Price && (
+            {product.compare_at_price > 0 && product.compare_at_price !== product.price && (
               <span className="text-sm text-gray-400 line-through">
-                {product.CompareAtPrice.toLocaleString()} đ
+                {product.compare_at_price.toLocaleString()} đ
               </span>
             )}
           </div>
@@ -127,11 +127,10 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
         <div className="flex flex-col gap-2 self-start">
           <button
             onClick={handleToggleWishlist}
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
-              isWishlisted
-                ? "bg-red-50 text-red-500"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
+            className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors ${isWishlisted
+              ? "bg-red-50 text-red-500"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
           >
             <Heart className={`h-4 w-4 ${isWishlisted ? "fill-red-500" : ""}`} />
           </button>
@@ -150,15 +149,15 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
   return (
     <Link
-      href={`/products/${product.ID}`}
+      href={`/products/${product.id}`}
       className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all"
     >
       {/* Image container */}
       <div className="relative aspect-square bg-gray-100 overflow-hidden">
-        {product.Images && product.Images.length > 0 ? (
+        {product.images && product.images.length > 0 ? (
           <img
-            src={product.Images[0].URL}
-            alt={product.Name}
+            src={product.images[0].image_url}
+            alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
@@ -180,11 +179,10 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
         <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={handleToggleWishlist}
-            className={`w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-colors ${
-              isWishlisted
-                ? "bg-red-50 text-red-500"
-                : "bg-white text-gray-600 hover:bg-gray-50"
-            }`}
+            className={`w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-colors ${isWishlisted
+              ? "bg-red-50 text-red-500"
+              : "bg-white text-gray-600 hover:bg-gray-50"
+              }`}
           >
             <Heart className={`h-4 w-4 ${isWishlisted ? "fill-red-500" : ""}`} />
           </button>
@@ -204,19 +202,19 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
       {/* Content */}
       <div className="p-4 space-y-2">
-        <p className="text-xs text-gray-500">{product.Category?.Name}</p>
+        <p className="text-xs text-gray-500">{product.category?.name}</p>
         <h3 className="font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
-          {product.Name}
+          {product.name}
         </h3>
 
         {/* Price */}
         <div className="flex items-center gap-2 pt-1">
           <span className="text-lg font-bold text-red-500">
-            {product.Price.toLocaleString()} đ
+            {product.price.toLocaleString()} đ
           </span>
-          {product.CompareAtPrice > 0 && product.CompareAtPrice !== product.Price && (
+          {product.compare_at_price > 0 && product.compare_at_price !== product.price && (
             <span className="text-sm text-gray-400 line-through">
-              {product.CompareAtPrice.toLocaleString()} đ
+              {product.compare_at_price.toLocaleString()} đ
             </span>
           )}
         </div>

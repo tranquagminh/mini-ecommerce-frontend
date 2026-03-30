@@ -8,6 +8,7 @@ import { Sidebar } from "./components/Sidebar";
 import { ProfileForm } from "./components/ProfileForm";
 import { FavoritesTab } from "./components/FavoritesTab";
 import { ChangePasswordForm } from "./components/ChangePasswordForm";
+import { OrdersList } from "./components/OrdersList";
 import { AccountTabType } from "@/constants";
 
 export default function AccountPage() {
@@ -43,19 +44,7 @@ export default function AccountPage() {
             {/* Main content */}
             <div className="flex-1 bg-white rounded-lg border border-gray-200 p-8">
               {tab === "profile" && <ProfileForm user={user} />}
-              {tab === "orders" && (
-                <div>
-                  <div className="flex items-center gap-6 border-b mb-6">
-                    <button className="pb-3 px-1 text-gray-600 hover:text-gray-900 font-medium text-sm">
-                      Thông tin cá nhân
-                    </button>
-                    <button className="pb-3 px-1 border-b-2 border-blue-600 text-blue-600 font-medium text-sm">
-                      Đơn hàng
-                    </button>
-                  </div>
-                  <p className="text-gray-500">Danh sách đơn hàng sẽ hiển thị ở đây 💳</p>
-                </div>
-              )}
+              {tab === "orders" && <OrdersList userId={user.id} />}
               {tab === "favorites" && <FavoritesTab />}
               {tab === "settings" && <ChangePasswordForm />}
               {tab === "address" && (

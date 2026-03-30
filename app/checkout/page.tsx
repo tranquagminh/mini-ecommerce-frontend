@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -9,6 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCartStore } from "@/store/cartStore";
+import type { CartItem } from "@/store/cartStore";
+import { useAuthStore } from "@/store/authStore";
+import { createOrder } from "@/features/orders/api";
+import { toast } from "sonner";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowLeft,
@@ -68,7 +72,7 @@ function OrderSummary({
   onPlaceOrder,
   isLoading,
 }: {
-  items: { product: { ID: number; Name: string; Price: number; Images: { URL: string }[] | null }; quantity: number }[];
+  items: CartItem[];
   subtotal: number;
   shipping: number;
   total: number;
@@ -82,24 +86,23 @@ function OrderSummary({
       {/* Order Items */}
       <div className="space-y-4 max-h-64 overflow-y-auto mb-4">
         {items.map((item) => {
-          const imageUrl = item.product.Images?.[0]?.URL || "/placeholder.png";
+          const imageUrl = item.product.images?.[0]?.image_url || "/placeholder.png";
           return (
-            <div key={item.product.ID} className="flex gap-3">
+            <div key={item.product.id} className="flex gap-3">
               <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-                <Image
+                <img
                   src={imageUrl}
-                  alt={item.product.Name}
-                  width={64}
-                  height={64}
+                  alt={item.product.name}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-grow">
                 <h4 className="text-sm font-medium text-gray-900 line-clamp-2">
-                  {item.product.Name}
+                  {item.product.name}
                 </h4>
+                <p className="text-xs text-gray-500 mt-0.5">x{item.quantity}</p>
                 <p className="text-sm text-red-600 font-medium mt-1">
-                  {formatPrice(item.product.Price)}
+                  {formatPrice(item.product.price * item.quantity)}
                 </p>
               </div>
             </div>
@@ -153,7 +156,9 @@ function OrderSummary({
 }
 
 export default function CheckoutPage() {
-  const { items, getTotal, isHydrated } = useCartStore();
+  const router = useRouter();
+  const { items, getTotal, isHydrated, clearCart } = useCartStore();
+  const { user } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
   const [form, setForm] = useState<ShippingForm>({
@@ -178,16 +183,51 @@ export default function CheckoutPage() {
   };
 
   const handlePlaceOrder = async () => {
+    if (!user?.id) {
+      toast.error("Vui lòng đăng nhập để đặt hàng");
+      router.push("/login");
+      return;
+    }
+    if (!form.fullName.trim()) {
+      toast.error("Vui lòng nhập họ và tên");
+      return;
+    }
+    if (!form.phone.trim()) {
+      toast.error("Vui lòng nhập số điện thoại");
+      return;
+    }
+    if (!form.address.trim()) {
+      toast.error("Vui lòng nhập địa chỉ giao hàng");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      // TODO: Implement order placement API call
-      console.log("Placing order:", { form, paymentMethod, items });
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // TODO: Navigate to order confirmation page
-      alert("Đặt hàng thành công!");
+      const order = await createOrder({
+        user_id: user.id,
+        shipping_full_name: form.fullName,
+        shipping_phone: form.phone,
+        shipping_province: form.city,
+        shipping_district: form.district,
+        shipping_ward: form.ward,
+        shipping_address: form.address,
+        payment_method: paymentMethod,
+        note: form.note || undefined,
+        items: items.map((item) => ({
+          product_id: item.product.id,
+          product_name: item.product.name,
+          product_image: item.product.images?.[0]?.image_url,
+          sku: item.product.sku,
+          quantity: item.quantity,
+          unit_price: item.product.price,
+        })),
+      });
+
+      clearCart();
+      router.push(`/orders/${order.id}`);
     } catch (error) {
       console.error("Order failed:", error);
-      alert("Đặt hàng thất bại. Vui lòng thử lại.");
+      toast.error("Đặt hàng thất bại. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }

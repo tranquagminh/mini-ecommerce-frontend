@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { loginSchema } from "@/features/user/validation";
 import { toast } from "sonner";
 
-export function LoginForm() {
+export function LoginForm({ returnUrl = "/" }: { returnUrl?: string }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -30,7 +30,7 @@ export function LoginForm() {
     try {
       await login(form.email, form.password);
       toast.success("Đăng nhập thành công 🎉");
-      router.push("/account");
+      router.push(returnUrl);
     } catch { 
       toast.error("Email hoặc mật khẩu không chính xác ❌");
     } finally {

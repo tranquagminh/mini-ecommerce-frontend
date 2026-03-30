@@ -26,7 +26,7 @@ export const useWishlistStore = create<WishlistState>()(
 
       addToWishlist: (product) => {
         const { items } = get();
-        const exists = items.some((item) => item.ID === product.ID);
+        const exists = items.some((item) => item.id === product.id);
         if (!exists) {
           set({ items: [...items, product] });
         }
@@ -34,7 +34,7 @@ export const useWishlistStore = create<WishlistState>()(
 
       removeFromWishlist: (productId) => {
         set({
-          items: get().items.filter((item) => item.ID !== productId),
+          items: get().items.filter((item) => item.id !== productId),
         });
       },
 
@@ -45,7 +45,7 @@ export const useWishlistStore = create<WishlistState>()(
       setHydrated: (state) => set({ isHydrated: state }),
 
       isInWishlist: (productId) => {
-        return get().items.some((item) => item.ID === productId);
+        return get().items.some((item) => item.id === productId);
       },
 
       getItemCount: () => {

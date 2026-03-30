@@ -5,18 +5,21 @@ import { LoginForm } from "@/features/user/components/LoginForm";
 import { RegisterForm } from "@/features/user/components/RegisterForm";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function AuthPage() {
+function AuthPageInner() {
   const [tab, setTab] = useState<"login" | "register">("login");
   const { token } = useAuth();
   const router = useRouter();
-  
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl") || "/account";
+
   useEffect(() => {
     if (token) {
-      router.replace("/account");
+      router.replace(returnUrl);
     }
-  }, [token,router]);
+  }, [token, router, returnUrl]);
   
   return (
     <div className="min-h-screen flex bg-linear-to-br from-indigo-50 to-white">
@@ -107,9 +110,17 @@ export default function AuthPage() {
             </button>
           </div>
 
-          {tab === "login" ? <LoginForm /> : <RegisterForm />}
+          {tab === "login" ? <LoginForm returnUrl={returnUrl} /> : <RegisterForm />}
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense>
+      <AuthPageInner />
+    </Suspense>
   );
 }

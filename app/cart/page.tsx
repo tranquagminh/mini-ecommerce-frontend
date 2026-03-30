@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/layout/Header";
@@ -9,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/store/cartStore";
+import type { CartItem as CartItemType } from "@/store/cartStore";
 import {
   ArrowLeft,
   Minus,
@@ -31,37 +31,41 @@ function CartItem({
   onUpdateQuantity,
   onRemove,
 }: {
-  item: { product: { ID: number; Name: string; Price: number; CompareAtPrice: number; StockQuantity: number; Images: { URL: string }[] | null; Category: { Name: string } }; quantity: number };
+  item: CartItemType;
   onUpdateQuantity: (id: number, quantity: number) => void;
   onRemove: (id: number) => void;
 }) {
   const { product, quantity } = item;
-  const imageUrl = product.Images?.[0]?.URL || "/placeholder.png";
-  const isInStock = product.StockQuantity > 0;
-  const itemTotal = product.Price * quantity;
+  const imageUrl = product.images?.[0]?.image_url || "";
+  const isInStock = product.stock_quantity > 0;
+  const itemTotal = product.price * quantity;
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">
       <div className="flex gap-4">
         {/* Product Image */}
         <div className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-          <Image
-            src={imageUrl}
-            alt={product.Name}
-            width={80}
-            height={80}
-            className="w-full h-full object-cover"
-          />
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+              No img
+            </div>
+          )}
         </div>
 
         {/* Product Info */}
         <div className="flex-grow">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="font-medium text-gray-900 mb-1">{product.Name}</h3>
+              <h3 className="font-medium text-gray-900 mb-1">{product.name}</h3>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
-                  {product.Category?.Name || "Sản phẩm"}
+                  {product.category?.name || "Sản phẩm"}
                 </span>
                 {isInStock ? (
                   <span className="text-xs text-green-600 flex items-center gap-1">
@@ -77,7 +81,7 @@ function CartItem({
               </div>
             </div>
             <button
-              onClick={() => onRemove(product.ID)}
+              onClick={() => onRemove(product.id)}
               className="text-gray-400 hover:text-red-500 transition-colors p-1"
             >
               <Trash2 className="w-4 h-4" />
@@ -87,11 +91,11 @@ function CartItem({
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center gap-2">
               <span className="text-red-600 font-semibold">
-                {formatPrice(product.Price)}
+                {formatPrice(product.price)}
               </span>
-              {product.CompareAtPrice > product.Price && (
+              {product.compare_at_price > product.price && (
                 <span className="text-gray-400 text-sm line-through">
-                  {formatPrice(product.CompareAtPrice)}
+                  {formatPrice(product.compare_at_price)}
                 </span>
               )}
             </div>
@@ -103,7 +107,7 @@ function CartItem({
               </span>
               <div className="flex items-center border border-gray-200 rounded-lg">
                 <button
-                  onClick={() => onUpdateQuantity(product.ID, quantity - 1)}
+                  onClick={() => onUpdateQuantity(product.id, quantity - 1)}
                   disabled={quantity <= 1}
                   className="p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -113,8 +117,8 @@ function CartItem({
                   {quantity}
                 </span>
                 <button
-                  onClick={() => onUpdateQuantity(product.ID, quantity + 1)}
-                  disabled={quantity >= product.StockQuantity}
+                  onClick={() => onUpdateQuantity(product.id, quantity + 1)}
+                  disabled={quantity >= product.stock_quantity}
                   className="p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Plus className="w-4 h-4" />
@@ -391,7 +395,7 @@ export default function CartPage() {
             <div className="lg:col-span-2">
               {items.map((item) => (
                 <CartItem
-                  key={item.product.ID}
+                  key={item.product.id}
                   item={item}
                   onUpdateQuantity={updateQuantity}
                   onRemove={removeFromCart}

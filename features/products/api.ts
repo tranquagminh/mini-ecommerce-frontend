@@ -1,9 +1,10 @@
-import { api } from "@/lib/api";
 import {
   ProductsResponse,
   ProductsQueryParams,
   ApiProduct,
   Category,
+  ReviewsResponse,
+  QAResponse,
 } from "./types";
 
 const PRODUCT_SERVICE_URL =
@@ -47,5 +48,31 @@ export async function getRootCategories(): Promise<Category[]> {
 // Get single category by ID
 export async function getCategory(id: number): Promise<Category> {
   const response = await productApi.get<Category>(`/categories/${id}`);
+  return response.data;
+}
+
+// Get product reviews
+export async function getProductReviews(
+  productId: number,
+  page = 1,
+  limit = 10
+): Promise<ReviewsResponse> {
+  const response = await productApi.get<ReviewsResponse>(
+    `/products/${productId}/reviews`,
+    { params: { page, limit } }
+  );
+  return response.data;
+}
+
+// Get product Q&A
+export async function getProductQA(
+  productId: number,
+  page = 1,
+  limit = 10
+): Promise<QAResponse> {
+  const response = await productApi.get<QAResponse>(
+    `/products/${productId}/qa`,
+    { params: { page, limit } }
+  );
   return response.data;
 }

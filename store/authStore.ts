@@ -21,12 +21,18 @@ export const useAuthStore = create<AuthState>()(
       isHydrated: false,
       setUser: (u) => set({ user: u }),
       setToken: (token) => {
-        if (token) localStorage.setItem("token", token);
-        else localStorage.removeItem("token");
+        if (token) {
+          localStorage.setItem("token", token);
+          document.cookie = `token=${token}; path=/; max-age=604800; SameSite=Lax`;
+        } else {
+          localStorage.removeItem("token");
+          document.cookie = "token=; path=/; max-age=0; SameSite=Lax";
+        }
         set({ token });
       },
       logout: () => {
         localStorage.removeItem("token");
+        document.cookie = "token=; path=/; max-age=0; SameSite=Lax";
         set({ user: null, token: null });
       },
       setHydrated: (state) => set({ isHydrated: state }),

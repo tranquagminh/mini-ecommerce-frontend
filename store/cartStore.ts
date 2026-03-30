@@ -33,17 +33,17 @@ export const useCartStore = create<CartState>()(
 
       addToCart: (product, quantity = 1) => {
         const { items } = get();
-        const existingItem = items.find((item) => item.product.ID === product.ID);
+        const existingItem = items.find((item) => item.product.id === product.id);
 
         if (existingItem) {
           // Update quantity if item exists
           const newQuantity = Math.min(
             existingItem.quantity + quantity,
-            product.StockQuantity
+            product.stock_quantity
           );
           set({
             items: items.map((item) =>
-              item.product.ID === product.ID
+              item.product.id === product.id
                 ? { ...item, quantity: newQuantity }
                 : item
             ),
@@ -51,14 +51,14 @@ export const useCartStore = create<CartState>()(
         } else {
           // Add new item
           set({
-            items: [...items, { product, quantity: Math.min(quantity, product.StockQuantity) }],
+            items: [...items, { product, quantity: Math.min(quantity, product.stock_quantity) }],
           });
         }
       },
 
       removeFromCart: (productId) => {
         set({
-          items: get().items.filter((item) => item.product.ID !== productId),
+          items: get().items.filter((item) => item.product.id !== productId),
         });
       },
 
@@ -67,13 +67,13 @@ export const useCartStore = create<CartState>()(
         if (quantity <= 0) {
           // Remove item if quantity is 0 or less
           set({
-            items: items.filter((item) => item.product.ID !== productId),
+            items: items.filter((item) => item.product.id !== productId),
           });
         } else {
           set({
             items: items.map((item) =>
-              item.product.ID === productId
-                ? { ...item, quantity: Math.min(quantity, item.product.StockQuantity) }
+              item.product.id === productId
+                ? { ...item, quantity: Math.min(quantity, item.product.stock_quantity) }
                 : item
             ),
           });
@@ -92,13 +92,13 @@ export const useCartStore = create<CartState>()(
 
       getTotal: () => {
         return get().items.reduce(
-          (total, item) => total + item.product.Price * item.quantity,
+          (total, item) => total + item.product.price * item.quantity,
           0
         );
       },
 
       getItemByProductId: (productId) => {
-        return get().items.find((item) => item.product.ID === productId);
+        return get().items.find((item) => item.product.id === productId);
       },
     }),
     {

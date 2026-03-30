@@ -27,12 +27,12 @@ export function Sidebar({ active, onChange, onLogout, user }: SidebarProps) {
       <div className="p-6 border-b">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-2xl font-semibold shadow-lg">
-            {user.Username?.[0]?.toUpperCase() || 'N'}
-            {user.Username?.split(' ').pop()?.[0]?.toUpperCase() || 'V'}
+            {user.username?.[0]?.toUpperCase() || 'N'}
+            {user.username?.split(' ').pop()?.[0]?.toUpperCase() || 'V'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-gray-900 truncate">{user.Username}</p>
-            <p className="text-sm text-gray-500 truncate">{user.Email}</p>
+            <p className="font-semibold text-gray-900 truncate">{user.username}</p>
+            <p className="text-sm text-gray-500 truncate">{user.email}</p>
           </div>
         </div>
       </div>

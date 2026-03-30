@@ -102,6 +102,7 @@ export default function ProductsPage() {
 
         const response = await getProducts(params);
         setProducts(response.products || []);
+
         setTotal(response.total || 0);
       } catch (err) {
         console.error("Failed to fetch products:", err);
@@ -122,7 +123,7 @@ export default function ProductsPage() {
   // Convert FilterState for ProductFilters component
   const filtersForComponent = {
     categories: filters.categories.map(
-      (id) => categories.find((c) => c.ID === id)?.Name || ""
+      (id) => categories.find((c) => c.id === id)?.name || ""
     ),
     priceRange: filters.priceRange,
     ratings: [] as number[],
@@ -133,7 +134,7 @@ export default function ProductsPage() {
   const handleFilterChange = (newFilters: typeof filtersForComponent) => {
     setFilters({
       categories: newFilters.categories
-        .map((name) => categories.find((c) => c.Name === name)?.ID)
+        .map((name) => categories.find((c) => c.name === name)?.id)
         .filter((id): id is number => id !== undefined),
       priceRange: newFilters.priceRange,
       inStock: newFilters.inStock,
@@ -266,7 +267,7 @@ export default function ProductsPage() {
                 >
                   {products.map((product) => (
                     <ProductCard
-                      key={product.ID}
+                      key={product.id}
                       product={product}
                       viewMode={viewMode}
                     />

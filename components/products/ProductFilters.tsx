@@ -87,17 +87,17 @@ export function ProductFilters({
         <div className="space-y-2.5">
           {categories.map((category) => (
             <label
-              key={category.ID}
+              key={category.id}
               className="flex items-center gap-2.5 cursor-pointer group"
             >
               <Checkbox
-                checked={filters.categories.includes(category.Name)}
+                checked={filters.categories.includes(category.name)}
                 onCheckedChange={(checked) =>
-                  handleCategoryChange(category.Name, checked as boolean)
+                  handleCategoryChange(category.name, checked as boolean)
                 }
               />
               <span className="text-sm text-gray-700 group-hover:text-gray-900 flex-grow">
-                {category.Name}
+                {category.name}
               </span>
             </label>
           ))}

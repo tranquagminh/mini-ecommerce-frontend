@@ -102,14 +102,14 @@ export function Header() {
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2 hover:text-blue-600 transition-colors">
                     <div className="w-8 h-8 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
-                      {user.Username?.[0]?.toUpperCase() || 'U'}
+                      {user.username?.[0]?.toUpperCase() || 'U'}
                     </div>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium">{user.Username}</p>
-                    <p className="text-xs text-gray-500">{user.Email}</p>
+                    <p className="text-sm font-medium">{user.username}</p>
+                    <p className="text-xs text-gray-500">{user.email}</p>
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>

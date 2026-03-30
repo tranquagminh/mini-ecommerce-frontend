@@ -19,8 +19,8 @@ export function FavoritesTab() {
   };
 
   const handleAddToCart = (productId: number) => {
-    const product = items.find((item) => item.ID === productId);
-    if (product && product.StockQuantity > 0) {
+    const product = items.find((item) => item.id === productId);
+    if (product && product.stock_quantity > 0) {
       addToCart(product, 1);
       toast.success("Đã thêm vào giỏ hàng");
     }
@@ -73,21 +73,21 @@ export function FavoritesTab() {
       {/* Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((product) => {
-          const inStock = product.StockQuantity > 0;
-          const hasDiscount = product.CompareAtPrice > product.Price;
+          const inStock = product.stock_quantity > 0;
+          const hasDiscount = product.compare_at_price > product.price;
 
           return (
             <div
-              key={product.ID}
+              key={product.id}
               className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow"
             >
               {/* Image */}
-              <Link href={`/products/${product.ID}`}>
+              <Link href={`/products/${product.id}`}>
                 <div className="relative aspect-square bg-gray-100">
-                  {product.Images && product.Images.length > 0 ? (
+                  {product.images && product.images.length > 0 ? (
                     <img
-                      src={product.Images[0].URL}
-                      alt={product.Name}
+                      src={product.images[0].image_url}
+                      alt={product.name}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -106,22 +106,22 @@ export function FavoritesTab() {
               {/* Content */}
               <div className="p-4">
                 <p className="text-xs text-gray-500 mb-1">
-                  {product.Category?.Name}
+                  {product.category?.Name}
                 </p>
-                <Link href={`/products/${product.ID}`}>
+                <Link href={`/products/${product.id}`}>
                   <h3 className="font-medium text-gray-900 line-clamp-2 hover:text-blue-600 transition-colors">
-                    {product.Name}
+                    {product.name}
                   </h3>
                 </Link>
 
                 {/* Price */}
                 <div className="flex items-center gap-2 mt-2">
                   <span className="text-lg font-bold text-red-600">
-                    {formatPrice(product.Price)}
+                    {formatPrice(product.price)}
                   </span>
                   {hasDiscount && (
                     <span className="text-sm text-gray-400 line-through">
-                      {formatPrice(product.CompareAtPrice)}
+                      {formatPrice(product.compare_at_price)}
                     </span>
                   )}
                 </div>
@@ -129,7 +129,7 @@ export function FavoritesTab() {
                 {/* Actions */}
                 <div className="flex gap-2 mt-4">
                   <Button
-                    onClick={() => handleAddToCart(product.ID)}
+                    onClick={() => handleAddToCart(product.id)}
                     disabled={!inStock}
                     className="flex-1 bg-blue-600 hover:bg-blue-700 text-white h-9"
                   >
@@ -139,7 +139,7 @@ export function FavoritesTab() {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => handleRemove(product.ID)}
+                    onClick={() => handleRemove(product.id)}
                     className="h-9 w-9 text-red-500 border-red-200 hover:bg-red-50"
                   >
                     <Trash2 className="h-4 w-4" />

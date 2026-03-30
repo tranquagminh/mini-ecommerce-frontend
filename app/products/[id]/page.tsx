@@ -103,8 +103,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {/* Image Gallery */}
           <ProductImageGallery
-            images={product.Images}
-            productName={product.Name}
+            images={product.images}
+            productName={product.name}
           />
 
           {/* Product Info */}
@@ -118,8 +118,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
         {/* Related Products */}
         <RelatedProducts
-          categoryId={product.CategoryID}
-          currentProductId={product.ID}
+          categoryId={product.category_id}
+          currentProductId={product.id}
         />
       </main>
       <Footer />

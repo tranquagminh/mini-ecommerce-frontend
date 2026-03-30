@@ -25,13 +25,13 @@ function formatDateForInput(isoString: string | undefined): string {
 
 export function ProfileForm({ user }: Props) {
   const [form, setForm] = useState({
-    username: user.Username || "",
-    first_name: user.FirstName || "",
-    last_name: user.LastName || "",
-    email: user.Email || "",
-    phone: user.Phone || "",
-    gender: user.Gender || "",
-    birthday: formatDateForInput(user.Birthday) || "",
+    username: user.username || "",
+    first_name: user.first_name || "",
+    last_name: user.last_name || "",
+    email: user.email || "",
+    phone: user.phone || "",
+    gender: user.gender || "",
+    birthday: formatDateForInput(user.birthday) || "",
   });
   const [loading, setLoading] = useState(false);
   const {updateProfileUser, fetchUser} = useAuth();
@@ -64,16 +64,6 @@ export function ProfileForm({ user }: Props) {
   console.log(user)
   return (
     <div>
-      {/* Tabs */}
-      <div className="flex items-center gap-6 border-b mb-6">
-        <button className="pb-3 px-1 border-b-2 border-blue-600 text-blue-600 font-medium text-sm">
-          Thông tin cá nhân
-        </button>
-        <button className="pb-3 px-1 text-gray-600 hover:text-gray-900 font-medium text-sm">
-          Đơn hàng
-        </button>
-      </div>
-
       {/* Form content */}
       <div className="max-w-2xl">
         <h2 className="text-xl font-semibold text-gray-900 mb-6">Thông tin cá nhân</h2>
@@ -182,13 +172,13 @@ export function ProfileForm({ user }: Props) {
               className="h-11 px-8"
               onClick={() => {
                 setForm({
-                  username: user.Username || "",
-                  first_name: user.FirstName || "",
-                  last_name: user.LastName || "",
-                  email: user.Email || "",
-                  phone: user.Phone || "",
-                  gender: user.Gender || "",
-                  birthday: formatDateForInput(user.Birthday),
+                  username: user.username || "",
+                  first_name: user.first_name || "",
+                  last_name: user.last_name || "",
+                  email: user.email || "",
+                  phone: user.phone || "",
+                  gender: user.gender || "",
+                  birthday: formatDateForInput(user.birthday),
                 })
               }}
             >

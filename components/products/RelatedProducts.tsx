@@ -22,11 +22,11 @@ export function RelatedProducts({
       try {
         const response = await getProducts({
           category_id: categoryId,
-          limit: 5,
+          page_size: 5,
         });
         // Filter out current product and limit to 4
         const filtered = response.products
-          .filter((p) => p.ID !== currentProductId)
+          .filter((p) => p.id !== currentProductId)
           .slice(0, 4);
         setProducts(filtered);
       } catch (error) {
@@ -64,7 +64,7 @@ export function RelatedProducts({
       <h2 className="text-2xl font-bold">Sản phẩm liên quan</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {products.map((product) => (
-          <ProductCard key={product.ID} product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>
